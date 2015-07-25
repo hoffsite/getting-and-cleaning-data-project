@@ -8,9 +8,7 @@
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
-* Note the location of the unzipped data and update line 36 of the script run_analysis.R to reference the location of the data.
-
-`Line 36:  setwd("~/coursera/r/C3")`  <== change this file reference
+* Note: unzipped data from this file is assumed to be in the working directory
 
 * execute `run_analysis.R`
 
@@ -40,8 +38,6 @@ The script will create a tidy dataset (`tidyDataset-AverageValues.txt` as descri
 
     if (exists("masterData")) {remove(masterData)}
         
-    setwd("~/coursera/r/C3")
-    
     for (directory in c("test","train")) {
       # read observation data
       filename <- paste("X_",directory,".txt",sep="")

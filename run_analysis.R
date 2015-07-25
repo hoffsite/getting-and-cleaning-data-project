@@ -32,8 +32,10 @@
 #   o concatenate results to master data frame
 
 if (exists("masterData")) {remove(masterData)}
-    
-setwd("~/coursera/r/C3")
+
+# code below assumes Samsung data is uncompressed and loaded
+# in the working directory.
+# setwd("~/coursera/r/C3")
 
 for (directory in c("test","train")) {
   # read observation data
