@@ -17,25 +17,24 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 The script will create a tidy dataset as described in CodeBook.md and place it in the same directory.
 
 #Pseudo Code for Data Transformation#
-`
-For train and test subdirectories:
-  o read ./<directory>/X_<directory>.txt into data frame
-  o append (via cbind) columns for subject and activity from 
-    ./<directory>/subject_<directory>.txt 
-    and ./<directory>/y_<directory>.txt
-  o concatenate results to master data frame
-  
-Read column names defined into features.txt; note column positions.
-Reduce data frame to appropriate columns (only mean() and std()) 
-Adjust activity column to reflect character description rather than number.
-Write reduced data frame to a .csv file.
 
-Summarize reduced data frame by the following 
-  "class" variables: Activity and subject.
-  compute average for all columns using the melt and dcast functions
-  and place results in a summary data frame (tidy data set).
-Write summary data frame to csv file.
-`
+    For train and test subdirectories:
+      o read ./<directory>/X_<directory>.txt into data frame
+      o append (via cbind) columns for subject and activity from 
+        ./<directory>/subject_<directory>.txt 
+        and ./<directory>/y_<directory>.txt
+      o concatenate results to master data frame
+      
+    Read column names defined in features.txt; note column positions.
+    Reduce data frame to appropriate columns (only those that include titles with mean() and std()) 
+    Adjust activity column to reflect character description rather than number.
+    Write reduced data frame to a .csv file.
+    
+    Summarize reduced data frame by the following 
+      "class" variables: Activity and subject.
+      compute average for all columns using the melt and dcast functions
+      and place results in a summary data frame (tidy data set).
+    Write summary data frame to csv file.
 
 #R Code#
 
