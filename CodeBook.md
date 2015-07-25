@@ -24,7 +24,7 @@ The following files were used to complete the assignment:
 * `features.txt`, A list of 531 data items collected for each observation set
 * `X_train.txt`, `X_test.txt`,  files of observation sets, 1 row per observation set
 * `subject_train.txt`, `subject_test.txt`, files with 1 subject id per observation.  
-* `y_train.txt`, `y_test.txt`, files with activity id per observation
+* `y_train.txt`, `y_test.txt`, files with 1 activity id per observation
 
 
 ## Variables ##
@@ -35,7 +35,7 @@ The following files were used to complete the assignment:
 * activity id (from `y_train.txt` and `y_test.txt`).  These were coded fields ranging from 1 to 6.  They were coded to represent WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, and LAYING
 
 ### Observation Variables ###
-531 variables included in each row of `X_train.txt` and `X_test.txt`. Descriptive titles for each variable documented in features.txt.  Additional descriptive information included in a documentation file `features_info.txt`
+531 variables included in each row of `X_train.txt` and `X_test.txt`. Descriptive titles for each variable documented in `features.txt`.  Additional descriptive information included in a documentation file `features_info.txt`
 
 ## Transformations ##
 

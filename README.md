@@ -14,7 +14,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 * execute `run_analysis.R`
 
-The script will create a tidy dataset as described in CodeBook.md and place it in the same directory.
+The script will create a tidy dataset (`tidyDataset-AverageValues.txt` as described in CodeBook.md and place it in the same directory.
 
 #Pseudo Code for Data Transformation#
 
@@ -34,7 +34,7 @@ The script will create a tidy dataset as described in CodeBook.md and place it i
       "class" variables: Activity and subject.
       compute average for all columns using the melt and dcast functions
       and place results in a summary data frame (tidy data set).
-    Write summary data frame to csv file.
+    Write summary data frame to .txt file.
 
 #R Code#
 
