@@ -42,7 +42,7 @@ The following files were used to complete the assignment:
 * Training and test data sets were read into data frames
 * Columns for classification variables (Activity and Subject) were appended
 * Training and test data frames were concatenated.
-* Columns which did not describe Activity, Subject or which were documented to reference mean() or std() were removed
+* Columns which did not describe Activity, Subject or which were *not* documented to reference mean() or std() were removed
 * Column names were defined as Activity, Subject or according to documentation in features.txt
 * average values for all observational variables grouped by Classification Variables (Activity and Subject)
 were computed and recorded in a tidy dataset (tidyDataset-AverageValues.txt).
