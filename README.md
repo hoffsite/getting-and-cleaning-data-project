@@ -2,6 +2,8 @@
 
 #Instructions#
 
+* Process relies on R programming language with library `reshape2` 
+
 * Download and unzip data from the following address:
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
@@ -9,7 +11,6 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 * Note the location of the unzipped data and update line 36 of the script run_analysis.R to reference the location of the data.
 
 `Line 36:  setwd("~/coursera/r/C3")`  <== change this file reference
-
 
 * execute `run_analysis.R`
 
@@ -37,84 +38,82 @@ Write summary data frame to csv file.
 `
 
 #R Code#
-`
-if (exists("masterData")) {remove(masterData)}
+
+    if (exists("masterData")) {remove(masterData)}
+        
+    setwd("~/coursera/r/C3")
     
-setwd("~/coursera/r/C3")
-
-for (directory in c("test","train")) {
-  # read observation data
-  filename <- paste("X_",directory,".txt",sep="")
-  fileref<-paste(directory,filename,sep="/")
-  observationData <- read.csv(fileref,header=FALSE,sep="")
-  # read and append subject column
-  filename <- paste("subject_",directory,".txt",sep="")
-  fileref<-paste(directory,filename,sep="/")
-  subjectData <- read.csv(fileref,header=FALSE,sep="")
-  observationData <- cbind(observationData,subjectData)
-  # read and append activity column
-  filename <- paste("y_",directory,".txt",sep="")
-  fileref<-paste(directory,filename,sep="/")
-  activityData <- read.csv(fileref,header=FALSE,sep="")
-  observationData <- cbind(observationData,activityData)
-  # concatenate this data to all data.
-  if (!exists("masterData")) {
-    masterData <- observationData
-  } else {
-    masterData <- rbind(masterData, observationData)
-  }
-}
-
-# Adjust activity column to reflect character description rather than number.
-activityColumn <- ncol(masterData)
-
-# determine which columns to retain:
-#   Those titled "*-mean(*" or "*-std(*" and the last 2
-
-fileref<-"features.txt"
-columnInfo <- read.csv(fileref,header=FALSE,sep="")
-columnInfo <- columnInfo[grep("-(?:mean|std)[(]",columnInfo[[2]],ignore.case=TRUE,value=FALSE,perl=TRUE),]
-
-# append info for the subject and activity column
-columnInfo[,2] <- sapply(columnInfo[,2],as.character)
-columnInfo <- rbind(columnInfo, c(activityColumn-1,"Subject"))
-columnInfo <- rbind(columnInfo, c(activityColumn,"Activity"))
-columnInfo[[1]] <- as.numeric(columnInfo[[1]])
-
-# condense masterData to include only columns documented in columnInfo.
-retainOnlyTheseColumns <- columnInfo[[1]]
-masterData <- masterData[,retainOnlyTheseColumns]
-# and assign the appropriate names to remaining column of masterData
-columnNames <- columnInfo[[2]]
-names(masterData) <- columnNames
-
-# Adjust activity column to reflect character description rather than number.
-activityColumn <- ncol(masterData)
-masterData[[activityColumn]][masterData[[activityColumn]]==1] <- "WALKING"
-masterData[[activityColumn]][masterData[[activityColumn]]==2] <- "WALKING_UPSTAIRS"
-masterData[[activityColumn]][masterData[[activityColumn]]==3] <- "WALKING_DOWNSTAIRS"
-masterData[[activityColumn]][masterData[[activityColumn]]==4] <- "SITTING"
-masterData[[activityColumn]][masterData[[activityColumn]]==5] <- "STANDING"
-masterData[[activityColumn]][masterData[[activityColumn]]==6] <- "LAYING"
-
-# write the file with a reduced number of columns
-fileref<-"fewColumns.csv"
-if (file.exists(fileref)) {
-  file.remove(fileref)
-}
-write.table(masterData,file=fileref,col.names=TRUE,sep=",",row.names=FALSE)
-
-# prepare a "tidy" data frame that is aggregated by subject and activity
-# and contains the average value for all other columns
-
-require(reshape2)
-df_melt <- melt(masterData, id=c("Subject","Activity"))
-tidyDf  <- dcast(df_melt, Subject + Activity ~ variable, mean)
-fileref<-"tidyDataset-AverageValues.txt"
-if (file.exists(fileref)) {
-  file.remove(fileref)
-}
-write.table(tidyDf,file=fileref,col.names=TRUE,sep=",",row.names=FALSE)
-
-`
-
+    for (directory in c("test","train")) {
+      # read observation data
+      filename <- paste("X_",directory,".txt",sep="")
+      fileref<-paste(directory,filename,sep="/")
+      observationData <- read.csv(fileref,header=FALSE,sep="")
+      # read and append subject column
+      filename <- paste("subject_",directory,".txt",sep="")
+      fileref<-paste(directory,filename,sep="/")
+      subjectData <- read.csv(fileref,header=FALSE,sep="")
+      observationData <- cbind(observationData,subjectData)
+      # read and append activity column
+      filename <- paste("y_",directory,".txt",sep="")
+      fileref<-paste(directory,filename,sep="/")
+      activityData <- read.csv(fileref,header=FALSE,sep="")
+      observationData <- cbind(observationData,activityData)
+      # concatenate this data to all data.
+      if (!exists("masterData")) {
+        masterData <- observationData
+      } else {
+        masterData <- rbind(masterData, observationData)
+      }
+    }
+    
+    # Adjust activity column to reflect character description rather than number.
+    activityColumn <- ncol(masterData)
+    
+    # determine which columns to retain:
+    #   Those titled "*-mean(*" or "*-std(*" and the last 2
+    
+    fileref<-"features.txt"
+    columnInfo <- read.csv(fileref,header=FALSE,sep="")
+    columnInfo <- columnInfo[grep("-(?:mean|std)[(]",columnInfo[[2]],ignore.case=TRUE,value=FALSE,perl=TRUE),]
+    
+    # append info for the subject and activity column
+    columnInfo[,2] <- sapply(columnInfo[,2],as.character)
+    columnInfo <- rbind(columnInfo, c(activityColumn-1,"Subject"))
+    columnInfo <- rbind(columnInfo, c(activityColumn,"Activity"))
+    columnInfo[[1]] <- as.numeric(columnInfo[[1]])
+    
+    # condense masterData to include only columns documented in columnInfo.
+    retainOnlyTheseColumns <- columnInfo[[1]]
+    masterData <- masterData[,retainOnlyTheseColumns]
+    # and assign the appropriate names to remaining column of masterData
+    columnNames <- columnInfo[[2]]
+    names(masterData) <- columnNames
+    
+    # Adjust activity column to reflect character description rather than number.
+    activityColumn <- ncol(masterData)
+    masterData[[activityColumn]][masterData[[activityColumn]]==1] <- "WALKING"
+    masterData[[activityColumn]][masterData[[activityColumn]]==2] <- "WALKING_UPSTAIRS"
+    masterData[[activityColumn]][masterData[[activityColumn]]==3] <- "WALKING_DOWNSTAIRS"
+    masterData[[activityColumn]][masterData[[activityColumn]]==4] <- "SITTING"
+    masterData[[activityColumn]][masterData[[activityColumn]]==5] <- "STANDING"
+    masterData[[activityColumn]][masterData[[activityColumn]]==6] <- "LAYING"
+    
+    # write the file with a reduced number of columns
+    fileref<-"fewColumns.csv"
+    if (file.exists(fileref)) {
+      file.remove(fileref)
+    }
+    write.table(masterData,file=fileref,col.names=TRUE,sep=",",row.names=FALSE)
+    
+    # prepare a "tidy" data frame that is aggregated by subject and activity
+    # and contains the average value for all other columns
+    
+    require(reshape2)
+    df_melt <- melt(masterData, id=c("Subject","Activity"))
+    tidyDf  <- dcast(df_melt, Subject + Activity ~ variable, mean)
+    fileref<-"tidyDataset-AverageValues.txt"
+    if (file.exists(fileref)) {
+      file.remove(fileref)
+    }
+    write.table(tidyDf,file=fileref,col.names=TRUE,sep=",",row.names=FALSE)
+    
